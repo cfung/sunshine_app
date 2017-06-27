@@ -97,6 +97,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String[] doInBackground(String... params) {
 
+            if (params.length==0){
+                return null;
+            }
+
             //URL weatherURL = params[0];
             //String weatherResult = null;
             String location = params[0];
