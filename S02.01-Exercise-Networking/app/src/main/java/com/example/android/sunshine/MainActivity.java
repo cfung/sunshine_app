@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         loadWeatherData();
 
     }
-    // TODO (8) Create a method that will get the user's preferred location and execute your new AsyncTask and call it loadWeatherData
+    // completed (8) Create a method that will get the user's preferred location and execute your new AsyncTask and call it loadWeatherData
     private void loadWeatherData(){
 
         //String weatherQuery = mWeatherTextView.getText().toString();
