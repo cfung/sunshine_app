@@ -20,7 +20,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.example.android.sunshine.data.SunshinePreferences;
 import com.example.android.sunshine.utilities.NetworkUtils;
+import com.example.android.sunshine.utilities.OpenWeatherJsonUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -73,51 +75,62 @@ public class MainActivity extends AppCompatActivity {
             mWeatherTextView.append(dummyWeatherDay + "\n\n\n");
         }*/
 
-
-
-    }
-
-    // completed (9) Call loadWeatherData to perform the network request to get the weather
-    private void makeWeatherQuery(){
-
-        String weatherQuery = mWeatherTextView.getText().toString();
-        URL weatherURL = NetworkUtils.buildUrl(weatherQuery);
-        new weatherQueryTask().execute(weatherURL);
+        // completed (9) Call loadWeatherData to perform the network request to get the weather
+        loadWeatherData();
 
     }
-
     // TODO (8) Create a method that will get the user's preferred location and execute your new AsyncTask and call it loadWeatherData
+    private void loadWeatherData(){
+
+        //String weatherQuery = mWeatherTextView.getText().toString();
+        //URL weatherURL = NetworkUtils.buildUrl(weatherQuery);
+        String location = SunshinePreferences.getPreferredWeatherLocation(this);
+        new weatherQueryTask().execute(location);
+
+    }
+
+    // completed (8) Create a method that will get the user's preferred location and execute your new AsyncTask and call it loadWeatherData
     // completed (5) Create a class that extends AsyncTask to perform network requests
-    public class weatherQueryTask extends AsyncTask<URL, Void, String>{
+    public class weatherQueryTask extends AsyncTask<String, Void, String[]>{
 
         // completed (6) Override the doInBackground method to perform your network requests
         @Override
-        protected String doInBackground(URL... params) {
+        protected String[] doInBackground(String... params) {
 
-            URL weatherURL = params[0];
-            String weatherResult = null;
+            //URL weatherURL = params[0];
+            //String weatherResult = null;
+            String location = params[0];
+            URL weatherRequestUrl = NetworkUtils.buildUrl(location);
 
             try{
-                weatherResult = NetworkUtils.getResponseFromHttpUrl(weatherURL);
+                String jsonWeatherResponse = NetworkUtils.getResponseFromHttpUrl(weatherRequestUrl);
 
-            }catch(IOException e){
+                String[] simpleJsonWeatherData = OpenWeatherJsonUtils
+                        .getSimpleWeatherStringsFromJson(MainActivity.this, jsonWeatherResponse);
+
+                return simpleJsonWeatherData;
+
+            }catch(Exception e){
                 e.printStackTrace();
+                return null;
             }
 
-            return weatherResult;
+
         }
 
         // completed (7) Override the onPostExecute method to display the results of the network request
         @Override
-        protected void onPostExecute(String weatherResult){
+        protected void onPostExecute(String[] weatherResult){
 
             if (weatherResult != null && !weatherResult.equals("")){
-                mWeatherTextView.setText(weatherResult);
+
+                for (String weatherString : weatherResult){
+                    mWeatherTextView.append((weatherString) + "\n\n\n");
+                }
+
             }
 
         }
     }
-
-
 
 }
