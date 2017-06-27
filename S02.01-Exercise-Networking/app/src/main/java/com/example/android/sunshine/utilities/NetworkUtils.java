@@ -16,6 +16,7 @@
 package com.example.android.sunshine.utilities;
 
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -71,11 +72,9 @@ public final class NetworkUtils {
         // COMPLETED (1) Fix this method to return the URL used to query Open Weather Map's API
         Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                 .appendQueryParameter(QUERY_PARAM, locationQuery)
-                .appendQueryParameter(LAT_PARAM, units)
-                .appendQueryParameter(LON_PARAM, units)
                 .appendQueryParameter(FORMAT_PARAM, format)
                 .appendQueryParameter(UNITS_PARAM, units)
-                .appendQueryParameter(DAYS_PARAM, "cnt")
+                .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
                 .build();
 
 
@@ -86,6 +85,8 @@ public final class NetworkUtils {
         }catch(MalformedURLException e){
             e.printStackTrace();
         }
+
+        Log.v(TAG, "Built URI " + weatherURL);
 
         return weatherURL ;
     }
