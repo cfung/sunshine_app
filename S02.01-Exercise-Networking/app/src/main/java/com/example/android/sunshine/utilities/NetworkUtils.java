@@ -80,7 +80,7 @@ public final class NetworkUtils {
 
         URL weatherURL = null;
         try{
-            weatherURL = new URL(weatherURL.toString());
+            weatherURL = new URL(builtUri.toString());
 
         }catch(MalformedURLException e){
             e.printStackTrace();
