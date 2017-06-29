@@ -113,9 +113,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // TODO (7) Override onOptionsItemSelected to handle clicks on the refresh button
+    // completed (7) Override onOptionsItemSelected to handle clicks on the refresh button
     @Override
-    public boolean onOptionsItemsSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item){
 
         int itemThatWasClickedId = item.getItemId();
         if (itemThatWasClickedId == R.id.action_refresh){
